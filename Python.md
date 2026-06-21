@@ -5262,17 +5262,51 @@ if __name__ == '__main__':
 
 
 
-## Selenium
+## 九、Selenium
 
 > 浏览器自动化工具，控制真实浏览器去打开网页、点击、滚动、执行JS，然后把结果拿下来
+>
+> ```
+> pip install selenium
+> ```
 
+### `webdriver` 模块
 
+> Selenium 用来驱动浏览器执行操作的统一接口
+> 
+> 
+> ```python
+> from selenium import webdriver
+> ```
+>
 
+```python
+driver = webdriver.Chrome()  # 启动浏览器
+driver.get('https://baidu.com')  # 打开网页
+driver.click()  # 点击
+driver.quit()   # 关浏览器
+```
 
+### `By` 模块：找元素
 
+```python
+from selenium.webdriver.common.by import By
+```
 
+#### 8种定位方式
 
+> `find_element` 找不到会**报错**，`find_elements`（多了s）找不到返回**空列表**
 
+|   方式    | 代码                                          | 什么时候用           |
+| :-------: | --------------------------------------------- | -------------------- |
+|  **ID**   | `find_element(By.ID, 'username')`             | 有唯一ID，优先用     |
+|  **CSS**  | `find_element(By.CSS_SELECTOR, '#kw')`        | 灵活强大，实际最常用 |
+| **XPath** | `find_element(By.XPATH, '//input[@id="kw"]')` | 结构复杂时用         |
+| **Name**  | `find_element(By.NAME, 'wd')`                 | 表单里常见           |
+| **Class** | `find_element(By.CLASS_NAME, 'btn')`          | 单个class名          |
+| 链接文本  | `find_element(By.LINK_TEXT, '登录')`          | 找`<a>`标签          |
+|  标签名   | `find_element(By.TAG_NAME, 'input')`          | 很少用               |
+| 部分文本  | `find_element(By.PARTIAL_LINK_TEXT, '登')`    | 模糊匹配链接         |
 
 
 
