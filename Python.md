@@ -1,3 +1,4 @@
+[Python.md](https://github.com/user-attachments/files/29170671/Python.md)
 # Python基础
 
 > **解释型语言**：Python 是一种解释型语言，代码运行时逐行解释执行。
