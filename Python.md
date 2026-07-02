@@ -1,4 +1,3 @@
-[Python.md](https://github.com/user-attachments/files/29170671/Python.md)
 # Python基础
 
 > **解释型语言**：Python 是一种解释型语言，代码运行时逐行解释执行。
@@ -3837,6 +3836,542 @@ with open('file.txt', 'r', encoding='utf-8') as f:
 
 
 
+# Numpy
+
+> 提供一个高性能的多维数组对象 `ndarray`
+>
+> ```
+> pip install numpy
+> ```
+
+## 创建数组
+
+```python
+import numpy as np
+
+np.array([1, 2, 3, 4], dtype=None, ndmin=0)
+# 传入‘能按顺序取出数值，且类型可统一’
+# 数据类型自动判断，ndmin ：强制最小维度
+```
+
+```python
+np.arange([start,] stop[, step,], dtype=None)
+# 起始值默认为 0，步长默认为 1，数据类型默认自动判断
+# 支持浮点数步长
+```
+
+```python
+np.linspace(start, stop, num=50, endpoint=True, retstep=False, dtype=None, axis=0)
+# 生成指定个数的等间距数组
+# num ：生成的元素个数
+# endpoint ：是否包含 stop
+# retstep ：是否同时返回步长
+# dtype ：数据类型（自动判断）
+# axis ：插入新轴的位置
+```
+
+## ndarray 基本属性
+
+|    属性     | 说明     |
+| :---------: | -------- |
+| **`ndim`**  | 维度     |
+| **`shape`** | 形状     |
+| **`size`**  | 元素数量 |
+| **`dtype`** | 数据类型 |
+
+
+
+## 伪随机数 `np.random`
+
+```python
+np.random.rand(3)
+# 0~1之间随机3个均匀分布的数
+
+np.random.randn(3)
+# 0~1之间正态分布，均值=0，方差=1
+
+np.random.randint(1, 10[, 5])
+# 1~9随机5个整数
+
+np.random.random()
+# 0~1随机浮点数
+
+np.random.choice([1,2,3,4])
+# 随机抽样
+
+np.random.choice([1,2,3,4], size=3)
+# 多个抽样
+# [,replace=False]不重复抽样
+
+arr = np.array([1, 2, 3, 4])
+np.random.shuffle(arr)
+# 打乱数组，直接修改原数组
+
+np.random.permutation([1, 2, 3, 4])
+# 不改变原数组
+
+np.random.seed(42)
+# 设置随机数种子
+```
+
+
+
+## 向量化运算
+
+```python
+a = np.array([1, 2, 3, 4, 5])
+b = np.array([6, 7, 8, 9, 10])
+result = a + b
+print(type(result), result)
+# <class 'numpy.ndarray'> [ 7  9 11 13 15]
+```
+
+## 二维索引与切片
+
+```python
+a[0, 1]     # 第0行第1列
+a[:, 1]     # 第2列
+a[1, :]     # 第2行
+```
+
+## 统计函数
+
+|           函数           | 说明                |
+| :----------------------: | ------------------- |
+|       **`sum()`**        | 求和                |
+|       **`mean()`**       | 平均值              |
+|    **`max()/min()`**     | 最大值/最小值       |
+| **`argmax()/argmin()`**  | 最大值/最小值的索引 |
+|       **`var()`**        | 方差                |
+|       **`std()`**        | 标准差              |
+|       **`axis=0`**       | 按列操作            |
+|       **`axis=1`**       | 按行操作            |
+| **`cumsum()/cumprod()`** | 累加/累乘           |
+
+## 算数函数
+
+|             函数              | 说明                           |
+| :---------------------------: | ------------------------------ |
+|    **`np.power(a, 指数)`**    | 幂运算                         |
+|      **`np.square(a)`**       | 平方                           |
+|       **`np.sqrt(a)`**        | 开方                           |
+|       **`np.floor(a)`**       | 向下取整                       |
+|       **`np.ceil(a)`**        | 向上取整                       |
+| **`np.round(a, decimals=0)`** | 四舍五入                       |
+|        **`np.abs(a)`**        | 绝对值                         |
+|  **`np.mod(被除数, 除数)`**   | 取余                           |
+|    **`np.greater(a, b)`**     | a > b 为True，返回的是布尔数组 |
+|      **`np.less(a, b)`**      | <                              |
+|     **`np.equal(a, b)`**      | ==                             |
+
+## 广播
+
+> 不同形状的数组，在进行逐元素运算时，NumPy自动扩展较小数组，使它们形状兼容
+
+```python
+import numpy as np
+
+a = np.array([1, 2, 3])
+b = 10
+
+print(a + b)         # [11 12 13]
+
+# b 被广播成 [10, 10, 10]
+```
+
+### (3,1) + (1,3)
+
+```python
+a = np.array([[1],
+              [2],
+              [3]])
+
+b = np.array([[10, 20, 30]])
+
+'''
+[[1+10, 1+20, 1+30],
+ [2+10, 2+20, 2+30],
+ [3+10, 3+20, 3+30]]
+ 
+输出
+[[11 21 31]
+ [12 22 32]
+ [13 23 33]]
+ '''
+```
+
+### (2,3) + (2,1)
+
+```python
+a = np.array([[1,2,3],
+              [4,5,6]])
+
+b = np.array([[10],
+              [20]])
+
+'''
+[[11 12 13]
+ [24 25 26]]
+ '''
+```
+
+### 广播规则
+
+> 从右往左对齐，维度相同或为1就能广播
+
+
+
+
+
+# Pandas
+
+## `Series(data, index)`（一维数组）
+
+> 类似：Excel一列 / NumPy一维数组
+>
+> 用字典创建：key → index
+>
+> <span style='color:red'>继承于Numpy</span>
+>
+> Pandas 会主动把 `None` 替换成 `np.nan`（浮点型缺失值），以便统一处理
+
+```python
+import pandas as pd
+
+s = pd.Series([10, 20, 30])
+print(s)
+'''
+0    10
+1    20
+2    30
+dtype: int64
+'''
+```
+
+### 访问
+
+```python
+import pandas as pd
+
+s = pd.Series({'a': 1, 'b': 2, 'c': 3})
+
+# 按索引取值
+s['a']
+
+# 按位置取值
+s.iloc[0]
+
+# 切片
+s[0:2]
+
+# 按标签切片（右端取到）
+s["a":"c"]
+
+
+s.values   # 值（NumPy数组）
+s.index    # 索引
+s.dtype    # 数据类型
+s.size     # 元素个数
+```
+
+### 筛选
+
+```python
+s[s > 10]
+
+s.isin(values)       # 判断某个值是否在指定集合（列表、Series、set）中，返回布尔值
+```
+
+### 修改数据
+
+```python
+s["a"] = 100
+
+s[s > 10] = 0
+```
+
+### 排序
+
+```python
+s.sort_values()         # 升序
+s.sort_values(ascending=False)     # 降序
+
+s.sort_index()          # 升序
+s.sort_index(ascending=False)     # 降序
+```
+
+### 索引对齐机制
+
+```python
+s1 = pd.Series([1,2,3], index=['a','b','c'])
+s2 = pd.Series([10,20,30], index=['b','c','d'])
+
+print(s1+s2)
+'''
+a     NaN
+b    12.0
+c    23.0
+d     NaN
+dtype: float64
+'''
+```
+
+
+
+### 缺失值处理
+
+> 以下几个方法默认都是**返回新 Series**，原数据 `s` 保持不变。直接修改原数据需要加参数 `inplace=True`
+>
+> 如果原 Series 是整数类型（`int`），一旦出现 `NaN`，Pandas 会自动将其转为浮点数（`float64`）。用 `fillna(0)` 填充后，它依然保持浮点型（如 `0.0`），不会变回纯整数。
+
+```python
+import numpy as np
+
+s = pd.Series([1, 2, np.nan, 4, np.nan])
+
+s.isna()   # 检测缺失值
+'''
+0    False
+1    False
+2     True   <- 这里缺失
+3    False
+4     True   <- 这里缺失
+dtype: bool
+'''
+
+s.notna()   # 检测非缺失值
+'''
+0     True
+1     True
+2    False
+3     True
+4    False
+dtype: bool
+'''
+
+s.dropna()  # 删除缺失值
+'''
+0    1.0
+1    2.0
+3    4.0
+dtype: float64
+'''
+
+s.fillna(0)   # 填充缺失值（用0代替NaN）
+'''
+0    1.0
+1    2.0
+2    0.0
+3    4.0
+4    0.0
+dtype: float64
+'''
+```
+
+
+
+### 去重与唯一值
+
+```python
+s = pd.Series(['A', 'B', 'A', 'C', 'B', None])
+
+s.unique()   # 列出有哪些不重复的值（返回数组）
+# ['A' 'B' 'C' None]
+
+s.nunique()   # 计算有多少种（默认不统计 NaN，要统计加上 dropna=False）
+# 3
+
+s.value_counts()   # 统计各自有多少个（这里加入了 dropna=False
+'''
+A       2
+B       2
+C       1
+None    1
+Name: count, dtype: int64
+'''
+```
+
+
+
+### 类型转换
+
+```python
+s.astype(int)
+s.astype(float)
+```
+
+
+
+## `DataFrame(data, index, columns)`
+
+> 多个 Series 按列拼起来的二维表，由三部分组成：**index**（行索引），**columns**（列索引），**values**（二维Numpy数组）
+>
+
+### 创建
+
+#### 字典
+
+```python
+import pandas as pd
+
+df = pd.DataFrame({
+    "name": ["A", "B", "C"],
+    "age": [18, 20, 22]
+})
+
+print(df)
+'''
+  name  age
+0    A   18
+1    B   20
+2    C   22
+'''
+```
+
+#### 列表嵌套
+
+```python
+pd.DataFrame([
+    [1, 2],
+    [3, 4]
+], columns=["A", "B"])
+'''
+   A  B
+0  1  2
+1  3  4
+'''
+```
+
+#### Series 组成
+
+```python
+s1 = pd.Series([1, 2])
+s2 = pd.Series([3, 4])
+
+pd.DataFrame({"A": s1, "B": s2})
+'''
+   A  B
+0  1  3
+1  2  4
+'''
+```
+
+#### 列表字典
+
+```python
+pd.DataFrame([
+    {"name": "A", "age": 18},
+    {"name": "B", "age": 20}
+])
+'''
+  name  age
+0    A   18
+1    B   20
+'''
+```
+
+### 访问
+
+```python
+# 获取一列
+df['name']
+
+# 获取多列
+df[["name", "age"]]
+
+# 行/列选择
+df.loc[0]    # 第0行
+df.loc[0, 'name']   # 行 + 列
+
+df.iloc[0]   # 第0行
+df.iloc[0, 1]   # 第0行第1列
+```
+
+
+
+### 切片
+
+```python
+df[0:2]      # 行切片
+df.loc[0:2]   # 标签切片（包含2）
+```
+
+### 对列操作
+
+```python
+# 新增列
+df["score"] = [90, 80, 70]
+
+
+# 修改列
+df["age"] = df["age"] + 1
+
+
+# 删除列
+df1 = df.drop("age", axis=1)
+```
+
+### 对行操作
+
+```python
+# 新增行
+new_row = pd.DataFrame({
+    "name": ["C"],
+    "age": [22]
+})
+df = pd.concat([df, new_row], ignore_index=True)
+concat表示拼接，ignore_index=True表示重新排列索引
+
+
+# 直接插入（不推荐）
+df.loc[len(df)] = ["D", 30]      # 最后一行之后的索引加入
+
+
+# 逐行追加
+data = []
+
+data.append({"name": "A", "age": 18})
+data.append({"name": "B", "age": 20})
+
+df = pd.DataFrame(data)
+
+
+# 删除行
+df1 = df.drop('行索引', axis=0)
+```
+
+### 条件筛选
+
+> 位运算符 & 的优先级高于比较运算符 >（下面的例子要加括号）
+
+```python
+df1 = df[(df['age']>18) & (df['gender']>60)]
+```
+
+
+
+### 统计函数
+
+```python
+df["age"].mean()
+df["age"].sum()
+df["age"].max()
+df["age"].min()
+
+# 整体：
+df.describe()
+```
+
+
+
+
+
+
+
+
+
+
+
 
 
 # 网络编程 `Socket（套接字）`
@@ -5297,6 +5832,8 @@ from selenium.webdriver.common.by import By
 #### 8种定位方式
 
 > `find_element` 找不到会**报错**，`find_elements`（多了s）找不到返回**空列表**
+>
+> 返回的要是元素节点（后面有相应的常见操作）
 
 |   方式    | 代码                                          | 什么时候用           |
 | :-------: | --------------------------------------------- | -------------------- |
@@ -5309,23 +5846,131 @@ from selenium.webdriver.common.by import By
 |  标签名   | `find_element(By.TAG_NAME, 'input')`          | 很少用               |
 | 部分文本  | `find_element(By.PARTIAL_LINK_TEXT, '登')`    | 模糊匹配链接         |
 
+### 三种等待
+
+> 等待元素加载出来，再去运行代码找元素
+
+|     方式     | 代码                                  | 说明                         |
+| :----------: | ------------------------------------- | ---------------------------- |
+| **强制等待** | `time.sleep(3)`                       | 等待3秒，不管元素加载没      |
+| **隐式等待** | `driver.implicitly_wait(10)`          | 全局生效，找不到就等最多10秒 |
+| **显式等待** | `WebDriverWait(driver,10).until(...)` | 等某个特定条件（推荐）       |
+
+> ```python
+> # 显式等待
+> from selenium.webdriver.support.ui import WebDriverWait
+> from selenium.webdriver.support import expected_conditions as EC
+> ```
+>
+> **`WebDriverWait`** ：最多等10秒，元素一出来立刻继续
+>
+> **`expected_conditions`** ：条件菜单，告诉 `WebDriverWait` 等待什么
+>
+> |                             代码                             | 示例                                 |
+> | :----------------------------------------------------------: | ------------------------------------ |
+> |        `EC.presence_of_element_located((By.□□, ...))`        | 等待元素出现在页面上                 |
+> |            `lambda d: d.find_element(By.□□, ...)`            | 自动传入`driver`（selenium4）        |
+> |     `EC.presence_of_all_elements_located((By.□□, ...))`      | 必须等所有元素加载出来，返回的是列表 |
+> |       `EC.visibility_of_element_located((By.□□, ...))`       | 出现且能看见                         |
+> |    `lambda d: d.find_element(By.□□, ...).is_displayed()`     |                                      |
+> |          `EC.element_to_be_clickable((By.□□, ...))`          | 出现+可见+可点击                     |
+> | `lambda d: d.find_element(By.□□, ...).is_displayed() and d.find_element(By.□□, ...).is_enabled()` |                                      |
+> |   `EC.text_to_be_present_in_element((By.□□, ...), '文字')`   | 等某个元素里出现指定文字             |
+> |    `lambda d: "文字" in d.find_element(By.□□, ...).text`     |                                      |
+>
+> <span style='color:red'>EC 模块填入的是元组，双括号</span>
+>
+> `until()` 里面必须传入的是可调用对象，`lambda` 
 
 
 
+### 常见操作
+
+|    操作    | 代码                                                         |
+| :--------: | ------------------------------------------------------------ |
+|    点击    | `element.click()`                                            |
+|  输入文字  | `element.send_keys('内容')`                                  |
+| 清空输入框 | `element.clear()`                                            |
+|  获取文字  | `element.text`                                               |
+|  获取属性  | `element.get_attribute('href')`                              |
+|    截图    | `driver.save_screenshot('a.png')`                            |
+|   执行JS   | `driver.execute_script('JS代码')`<br/>`driver.execute_script('return JS代码')`     带返回值 |
+| 切换iframe | `driver.switch_to.frame('frame_name')`                       |
+| 切回主页面 | `driver.switch_to.default_content()`                         |
+|  切换窗口  | `driver.switch_to.window(handle)`                            |
+
+## 案例：仙逆
+
+```
+https://www.hetushu.com/book/36/index.html
+```
+
+```
+D:\py-project\爬虫\案例\仙逆.py
+```
+
+```python
+from selenium import webdriver
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
+from selenium.common.exceptions import TimeoutException
+import time
+import random
 
 
+class XianNi:
+    def __init__(self):
+        self.url_index = 'https://www.hetushu.com/book/36/index.html'
+        self.driver = webdriver.Edge()
+        self.wait = WebDriverWait(self.driver, 15)  # 超时拉长
+
+    def get_url(self):
+        self.driver.get(self.url_index)
+
+        # 等待目录链接完全可见
+        self.wait.until(
+            EC.presence_of_all_elements_located((By.XPATH, '//dl[@id="dir"]/dd/a'))
+        )
+
+        boxs = self.driver.find_elements(By.XPATH, '//dl[@id="dir"]/dd/a')
+        href = [box.get_attribute('href') for box in boxs]
+        return href
+
+    def content(self, url):
+        self.driver.get(url)
+
+        try:
+
+            self.wait.until(
+                EC.presence_of_element_located((By.ID, "content"))
+            )
+
+            # 额外等一下，确保动态内容加载完
+            time.sleep(random.uniform(0.5, 1))
+
+        except TimeoutException:
+            print("超时:", url)
+            return ""
+
+        content = self.driver.execute_script(
+            "return document.getElementById('content').innerText"
+        )
+        return content
+
+    def run(self):
+        href = self.get_url()
+        for i, url in enumerate(href):
+            text = self.content(url)
+            # print(f"=== 第{i + 1}章 ===")
+            print(text)
+            print("\n" + "=" * 50 + "\n")
 
 
-
-
-
-
-
-
-
-
-
-
+if __name__ == '__main__':
+    book = XianNi()
+    book.run()
+```
 
 
 
